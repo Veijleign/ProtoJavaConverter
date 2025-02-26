@@ -24,52 +24,51 @@ message InnerPart {
 
 ## Default usage.
 ```
-    @Test
-    void testCase() throws Exception {
+void testCase() throws Exception {
 
-        // Create registry
-        ClassConventionRegister cRegister = new ClassConventionRegister();
+    // Create registry
+    ClassConventionRegister cRegister = new ClassConventionRegister();
 
-        // Register classes
-        cRegister.registerClass(
-                TestDto.class,
-                TestOuterClass.Test.class // generated class by protoc
-        );
+    // Register classes
+    cRegister.registerClass(
+            TestDto.class,
+            TestOuterClass.Test.class // generated class by protoc
+    );
 
-        cRegister.registerClass(
-                InnerPart.class,
-                InnerOuterPart.Test.class // generated class by protoc
-        );
+    cRegister.registerClass(
+            InnerPart.class,
+            InnerOuterPart.Test.class // generated class by protoc
+    );
 
 
-        // Create services
-        ProtobufSerializationService protobufSerializationService = new ProtobufSerializationService(cRegister.getSRegistry());
-        ProtobufDeserializationService protobufDeserializationService = new ProtobufDeserializationService(cRegister.getDRegistry());
+    // Create services
+    ProtobufSerializationService protobufSerializationService = new ProtobufSerializationService(cRegister.getSRegistry());
+    ProtobufDeserializationService protobufDeserializationService = new ProtobufDeserializationService(cRegister.getDRegistry());
 
-        TestDto originalTestDto = new TestDto(
-                1,
-                1.22f,
-                2.23f,
-                2.24f,
-                new InnerPart(
-                        List.of(1, 2, 3),
-                        List.of(99.99f, 77.77f),
-                        List.of(88.88f, 111.11f),
-                        List.of(true, false, true, false),
-                        List.of("hello", "bye", "nah")
-                )
-        );
+    TestDto originalTestDto = new TestDto(
+            1,
+            1.22f,
+            2.23f,
+            2.24f,
+            new InnerPart(
+                    List.of(1, 2, 3),
+                    List.of(99.99f, 77.77f),
+                    List.of(88.88f, 111.11f),
+                    List.of(true, false, true, false),
+                    List.of("hello", "bye", "nah")
+            )
+    );
 
-        log.info("Before: {}", originalTestDto);
-        byte[] bytes = protobufSerializationService.serialize(originalTestDto);
-        TestDto deserializedTestDto = protobufDeserializationService.deserialize(bytes, TestOuterClass.Test.class);
-        log.info("After:  {}", deserializedTestDto);
+    log.info("Before: {}", originalTestDto);
+    byte[] bytes = protobufSerializationService.serialize(originalTestDto);
+    TestDto deserializedTestDto = protobufDeserializationService.deserialize(bytes, TestOuterClass.Test.class);
+    log.info("After:  {}", deserializedTestDto);
 
-        // Checks
-        assertNotNull(bytes, "Serialized data should not be null");
-        assertNotNull(deserializedTestDto, "Deserialized object should not be null");
-        assertEquals(originalTestDto, deserializedTestDto, "The deserialized object should match the original object");
-    }
+    // Checks
+    assertNotNull(bytes, "Serialized data should not be null");
+    assertNotNull(deserializedTestDto, "Deserialized object should not be null");
+    assertEquals(originalTestDto, deserializedTestDto, "The deserialized object should match the original object");
+}
 ```
 ## Usage with Spring Boot.
 
