@@ -1,3 +1,5 @@
+## Description
+A project created out of laziness to manually write mapping of specific fields
 ## Quick Usage
 
 Define your .proto class:
